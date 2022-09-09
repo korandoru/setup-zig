@@ -17,8 +17,10 @@ header:
     copyright-owner: Korandoru Contributors
     spdx-id: Apache-2.0
   paths:
+    - '**/*.js'
     - '**/*.ts'
     - '**/*.yml'
+    - '**/*.zig'
   paths-ignore:
     - 'dist/**'
     - 'lib/**'
