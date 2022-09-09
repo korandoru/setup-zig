@@ -103,7 +103,7 @@ async function main() {
     if (!toolPath) {
         let extractedPath;
         if (tarballLink.endsWith('tar.xz')) {
-            extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(tarballPath);
+            extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(tarballPath, undefined, 'x');
         }
         else if (tarballLink.endsWith('zip')) {
             extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(tarballPath);

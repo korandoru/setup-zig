@@ -102,7 +102,7 @@ async function main(): Promise<void> {
   if (!toolPath) {
     let extractedPath: string
     if (tarballLink.endsWith('tar.xz')) {
-      extractedPath = await cache.extractTar(tarballPath)
+      extractedPath = await cache.extractTar(tarballPath, undefined, 'x')
     } else if (tarballLink.endsWith('zip')) {
       extractedPath = await cache.extractZip(tarballPath)
     } else {
