@@ -85,6 +85,7 @@ async function main() {
     if (!availableVersions.includes(zigVersion)) {
         throw new Error(`Unsupported version: ${zigVersion}`);
     }
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Using version ${zigVersion}...`);
     const zigVersionedDistro = _zigDistros_json__WEBPACK_IMPORTED_MODULE_2__[zigVersion];
     const targetPlatform = await resolveTargetPlatform();
     const availablePlatform = Object.keys(zigVersionedDistro);
@@ -92,19 +93,24 @@ async function main() {
         throw new Error(`Unsupported platform: ${targetPlatform}`);
     }
     const zigDistro = zigVersionedDistro[targetPlatform];
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Targeting to platform ${targetPlatform}...`);
     const tarballLink = zigDistro.tarball;
     const tarballPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(tarballLink);
-    let zigPath;
-    if (tarballLink.endsWith('tar.xz')) {
-        zigPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(tarballPath, undefined, 'x');
+    let toolPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('zig', zigVersion, targetPlatform);
+    if (!toolPath) {
+        let extractedPath;
+        if (tarballLink.endsWith('tar.xz')) {
+            extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(tarballPath, undefined, 'x');
+        }
+        else if (tarballLink.endsWith('zip')) {
+            extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(tarballPath);
+        }
+        else {
+            throw new Error(`Unsupported compression: ${tarballLink}`);
+        }
+        toolPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(extractedPath, 'zig', zigVersion, targetPlatform);
     }
-    else if (tarballLink.endsWith('zip')) {
-        zigPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(tarballPath);
-    }
-    else {
-        throw new Error(`Unsupported compression: ${tarballLink}`);
-    }
-    const toolPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(zigPath, 'zig', zigVersion, targetPlatform);
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Final toolPath=${toolPath}`);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(toolPath);
 }
 try {
