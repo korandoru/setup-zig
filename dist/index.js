@@ -98,12 +98,13 @@ async function main() {
     if (!availablePlatform.includes(targetPlatform)) {
         throw new Error(`Unsupported platform: ${targetPlatform}`);
     }
-    const zigDistro = zigVersionedDistro[targetPlatform];
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Targeting to platform ${targetPlatform}...`);
-    const tarballLink = zigDistro.tarball;
-    const tarballPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(tarballLink);
     let toolPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('zig', zigVersion, targetPlatform);
     if (!toolPath) {
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache miss. Downloading...`);
+        const zigDistro = zigVersionedDistro[targetPlatform];
+        const tarballLink = zigDistro.tarball;
+        const tarballPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(tarballLink);
         let extractedPath;
         if (tarballLink.endsWith('tar.xz')) {
             extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(tarballPath, undefined, ['x', '--strip', '1']);
@@ -119,6 +120,10 @@ async function main() {
             throw new Error(`Unsupported compression: ${tarballLink}`);
         }
         toolPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(extractedPath, 'zig', zigVersion, targetPlatform);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache new ${toolPath}`);
+    }
+    else {
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache hit ${toolPath}`);
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(toolPath);
 }
