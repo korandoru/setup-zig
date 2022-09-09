@@ -13,7 +13,7 @@
 # limitations under the License.
 
 name: 'Setup Zig environment'
-description: 'Set up a specific version of Python and add the command-line tools to the PATH.'
+description: 'Set up a specific version of Zig and add the command-line tools to the PATH.'
 author: 'Korandoru Contributors'
 inputs:
   zig-version:
