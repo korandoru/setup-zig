@@ -45,10 +45,14 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        zig: [ 0.9.1, 0.8.1, master ]
+    name: Zig ${{ matrix.zig }} sample
     steps:
       - uses: actions/checkout@v3
-      - uses: ./
+      - name: Setup Zig
+        uses: ./
         with:
-          zig-version: 0.9.1
-      - name: Execute Zig hello world
-        run: zig run tests/simple.zig
+          zig-version: ${{ matrix.zig }}
+      - run: zig run tests/simple.zig
