@@ -17,6 +17,7 @@
 import * as core from '@actions/core'
 import * as cache from '@actions/tool-cache'
 import zigDistros from './zigDistros.json'
+import * as fs from 'fs'
 
 interface DistroData {
   tarball: string
@@ -101,7 +102,7 @@ async function main(): Promise<void> {
   if (!toolPath) {
     let extractedPath: string
     if (tarballLink.endsWith('tar.xz')) {
-      extractedPath = await cache.extractTar(tarballPath, undefined, 'x')
+      extractedPath = await cache.extractTar(tarballPath)
     } else if (tarballLink.endsWith('zip')) {
       extractedPath = await cache.extractZip(tarballPath)
     } else {
@@ -110,6 +111,9 @@ async function main(): Promise<void> {
     toolPath = await cache.cacheDir(extractedPath, 'zig', zigVersion, targetPlatform)
   }
   core.info(`Final toolPath=${toolPath}`)
+  for (const file of fs.readdirSync(toolPath)) {
+    core.info(`file: ${file}`)
+  }
   core.addPath(toolPath)
 }
 

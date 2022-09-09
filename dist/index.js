@@ -12,6 +12,8 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(7784);
 /* harmony import */ var _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _zigDistros_json__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(8317);
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(7147);
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__nccwpck_require__.n(fs__WEBPACK_IMPORTED_MODULE_3__);
 /*
  * Copyright 2022 Korandoru Contributors
  *
@@ -27,6 +29,7 @@ __nccwpck_require__.r(__webpack_exports__);
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 
 
 
@@ -100,7 +103,7 @@ async function main() {
     if (!toolPath) {
         let extractedPath;
         if (tarballLink.endsWith('tar.xz')) {
-            extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(tarballPath, undefined, 'x');
+            extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(tarballPath);
         }
         else if (tarballLink.endsWith('zip')) {
             extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(tarballPath);
@@ -111,6 +114,9 @@ async function main() {
         toolPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(extractedPath, 'zig', zigVersion, targetPlatform);
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Final toolPath=${toolPath}`);
+    for (const file of fs__WEBPACK_IMPORTED_MODULE_3__.readdirSync(toolPath)) {
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`file: ${file}`);
+    }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(toolPath);
 }
 try {
