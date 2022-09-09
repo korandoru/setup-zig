@@ -17,8 +17,8 @@
 import * as core from '@actions/core'
 import * as cache from '@actions/tool-cache'
 import zigDistros from './zigDistros.json'
-import * as path from "path";
-import * as fs from "fs";
+import * as path from 'path'
+import * as fs from 'fs'
 
 interface DistroData {
   tarball: string

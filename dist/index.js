@@ -12,6 +12,10 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(7784);
 /* harmony import */ var _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _zigDistros_json__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(8317);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(1017);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__nccwpck_require__.n(path__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(7147);
+/* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__nccwpck_require__.n(fs__WEBPACK_IMPORTED_MODULE_4__);
 /*
  * Copyright 2022 Korandoru Contributors
  *
@@ -27,6 +31,8 @@ __nccwpck_require__.r(__webpack_exports__);
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
 
 
 
@@ -104,6 +110,10 @@ async function main() {
         }
         else if (tarballLink.endsWith('zip')) {
             extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(tarballPath);
+            const nestedPath = path__WEBPACK_IMPORTED_MODULE_3__.join(extractedPath, path__WEBPACK_IMPORTED_MODULE_3__.basename(tarballPath, '.zip'));
+            if (fs__WEBPACK_IMPORTED_MODULE_4__.existsSync(nestedPath)) {
+                extractedPath = nestedPath;
+            }
         }
         else {
             throw new Error(`Unsupported compression: ${tarballLink}`);
