@@ -15,6 +15,7 @@
  */
 
 import * as core from '@actions/core'
+import zigDistros from './zigDistros.json'
 
 async function main(): Promise<void> {
   const ms: string = core.getInput('milliseconds')
@@ -23,7 +24,8 @@ async function main(): Promise<void> {
   core.debug(new Date().toTimeString())
   core.debug(new Date().toTimeString())
 
-  core.setOutput('time', new Date().toTimeString())
+  core.info("zigDistros:")
+  core.info(JSON.stringify(zigDistros))
 }
 
 try {

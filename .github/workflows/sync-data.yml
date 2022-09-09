@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Sync Zig Distribution Data
+name: Sync Data
 
 on:
   pull_request:
@@ -25,13 +25,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Download Zig Distribution Data
+      - name: Download Zig distributions data
         run: curl -O https://ziglang.org/download/index.json
-      - name: Compare the expected and actual dist/ directories
+      - name: Compare with latest Zig distributions data
         id: diff
         run: |
-          if [ "$(git diff --no-index data/index.json index.json | wc -l)" -gt "0" ]; then
+          if [ "$(git diff --no-index scr/zigDistros.json index.json | wc -l)" -gt "0" ]; then
             echo "Detected differences in Zig distribution table.  See status below:"
-            git --no-pager diff --no-index data/index.json index.json
+            git --no-pager diff --no-index scr/zigDistros.json index.json
             exit 1
           fi
