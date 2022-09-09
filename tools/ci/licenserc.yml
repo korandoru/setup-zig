@@ -20,6 +20,7 @@ header:
     - '**/*.js'
     - '**/*.ts'
     - '**/*.yml'
+    - '**/*.zig'
   paths-ignore:
     - 'dist/**'
     - 'lib/**'
