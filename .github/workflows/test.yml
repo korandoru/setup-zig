@@ -30,6 +30,7 @@ jobs:
       - uses: apache/skywalking-eyes/header@main
         with:
           config: tools/ci/licenserc.yml
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +43,7 @@ jobs:
         run: corepack enable
       - run: yarn install
       - run: yarn run all
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -49,3 +51,5 @@ jobs:
       - uses: ./
         with:
           zig-version: 0.9.1
+      - name: Execute Zig hello world
+        run: zig run tests/simple.zig
