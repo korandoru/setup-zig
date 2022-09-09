@@ -83,33 +83,33 @@ async function main(): Promise<void> {
   if (!availableVersions.includes(zigVersion)) {
     throw new Error(`Unsupported version: ${zigVersion}`)
   }
+  core.info(`Using version ${zigVersion}...`)
+
   const zigVersionedDistro = (zigDistros as Record<string, any>)[zigVersion]
   const targetPlatform: string = await resolveTargetPlatform()
   const availablePlatform = Object.keys(zigVersionedDistro)
   if (!availablePlatform.includes(targetPlatform)) {
     throw new Error(`Unsupported platform: ${targetPlatform}`)
   }
-  const zigDistro = (zigVersionedDistro as Record<string, DistroData>)[
-    targetPlatform
-  ]
+  const zigDistro = (zigVersionedDistro as Record<string, DistroData>)[targetPlatform]
+  core.info(`Targeting to platform ${targetPlatform}...`)
 
   const tarballLink = zigDistro.tarball
   const tarballPath = await cache.downloadTool(tarballLink)
 
-  let zigPath
-  if (tarballLink.endsWith('tar.xz')) {
-    zigPath = await cache.extractTar(tarballPath, undefined, 'x')
-  } else if (tarballLink.endsWith('zip')) {
-    zigPath = await cache.extractZip(tarballPath)
-  } else {
-    throw new Error(`Unsupported compression: ${tarballLink}`)
+  let toolPath = cache.find('zig', zigVersion, targetPlatform)
+  if (!toolPath) {
+    let extractedPath: string
+    if (tarballLink.endsWith('tar.xz')) {
+      extractedPath = await cache.extractTar(tarballPath, undefined, 'x')
+    } else if (tarballLink.endsWith('zip')) {
+      extractedPath = await cache.extractZip(tarballPath)
+    } else {
+      throw new Error(`Unsupported compression: ${tarballLink}`)
+    }
+    toolPath = await cache.cacheDir(extractedPath, 'zig', zigVersion, targetPlatform)
   }
-  const toolPath = await cache.cacheDir(
-    zigPath,
-    'zig',
-    zigVersion,
-    targetPlatform
-  )
+  core.info(`Final toolPath=${toolPath}`)
   core.addPath(toolPath)
 }
 
