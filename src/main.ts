@@ -17,6 +17,8 @@
 import * as core from '@actions/core'
 import * as cache from '@actions/tool-cache'
 import zigDistros from './zigDistros.json'
+import * as path from "path";
+import * as fs from "fs";
 
 interface DistroData {
   tarball: string
@@ -104,6 +106,10 @@ async function main(): Promise<void> {
       extractedPath = await cache.extractTar(tarballPath, undefined, ['x', '--strip', '1'])
     } else if (tarballLink.endsWith('zip')) {
       extractedPath = await cache.extractZip(tarballPath)
+      const nestedPath = path.join(extractedPath, path.basename(tarballPath, '.zip'))
+      if (fs.existsSync(nestedPath)) {
+        extractedPath = nestedPath
+      }
     } else {
       throw new Error(`Unsupported compression: ${tarballLink}`)
     }
