@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import {expect, test} from '@jest/globals'
-
+import { expect, test } from '@jest/globals';
 test('it works', async () => {
-  await expect(1000 - 7).toEqual(993)
-})
+    await expect(1000 - 7).toEqual(993);
+});

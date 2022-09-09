@@ -19,95 +19,102 @@ import * as cache from '@actions/tool-cache'
 import zigDistros from './zigDistros.json'
 
 interface DistroData {
-    tarball: string,
-    shasum: string,
-    size: string,
+  tarball: string
+  shasum: string
+  size: string
 }
 
 async function resolveTargetPlatform(): Promise<string> {
-    const targetPlatform: string = core.getInput('target-platform')
-    if (targetPlatform && targetPlatform.length > 0) {
-        return targetPlatform
-    }
+  const targetPlatform: string = core.getInput('target-platform')
+  if (targetPlatform && targetPlatform.length > 0) {
+    return targetPlatform
+  }
 
-    const platform = process.platform
-    let resolvedPlatform
-    switch (platform) {
-        case "darwin":
-            resolvedPlatform = "macos"
-            break
-        case "win32":
-            resolvedPlatform = "windows"
-            break
-        case "freebsd":
-        case "netbsd":
-        case "openbsd":
-            resolvedPlatform = "freebsd"
-            break
-        case "linux":
-        case "cygwin":
-        case "android":
-            resolvedPlatform = "linux"
-            break
-        default:
-            core.warning(`Unknown platform: ${platform}; resolved as "linux"`)
-            resolvedPlatform = "linux"
-            break
-    }
+  const platform = process.platform
+  let resolvedPlatform
+  switch (platform) {
+    case 'darwin':
+      resolvedPlatform = 'macos'
+      break
+    case 'win32':
+      resolvedPlatform = 'windows'
+      break
+    case 'freebsd':
+    case 'netbsd':
+    case 'openbsd':
+      resolvedPlatform = 'freebsd'
+      break
+    case 'linux':
+    case 'cygwin':
+    case 'android':
+      resolvedPlatform = 'linux'
+      break
+    default:
+      core.warning(`Unknown platform: ${platform}; resolved as "linux"`)
+      resolvedPlatform = 'linux'
+      break
+  }
 
-    const arch = process.arch
-    let resolvedArch
-    switch (arch) {
-        case "arm64":
-            resolvedArch = "aarch64"
-            break
-        case "x64":
-            resolvedArch = "x86_64"
-            break
-        case "ia32":
-            resolvedArch = "i386"
-            break
-        case "mips":
-            resolvedArch = "riscv64"
-            break
-        default:
-            throw new Error(`Unsupported arch: ${arch}`)
-    }
+  const arch = process.arch
+  let resolvedArch
+  switch (arch) {
+    case 'arm64':
+      resolvedArch = 'aarch64'
+      break
+    case 'x64':
+      resolvedArch = 'x86_64'
+      break
+    case 'ia32':
+      resolvedArch = 'i386'
+      break
+    case 'mips':
+      resolvedArch = 'riscv64'
+      break
+    default:
+      throw new Error(`Unsupported arch: ${arch}`)
+  }
 
-    return `${resolvedArch}-${resolvedPlatform}`
+  return `${resolvedArch}-${resolvedPlatform}`
 }
 
 async function main(): Promise<void> {
-    const zigVersion: string = core.getInput('zig-version')
-    const availableVersions = Object.keys(zigDistros)
-    if (!availableVersions.includes(zigVersion)) {
-        throw new Error(`Unsupported version: ${zigVersion}`)
-    }
-    const zigVersionedDistro = (zigDistros as Record<string, any>)[zigVersion]
-    const targetPlatform: string = await resolveTargetPlatform()
-    const availablePlatform = Object.keys(zigVersionedDistro)
-    if (!availablePlatform.includes(targetPlatform)) {
-        throw new Error(`Unsupported platform: ${targetPlatform}`)
-    }
-    const zigDistro = (zigVersionedDistro as Record<string, DistroData>)[targetPlatform]
+  const zigVersion: string = core.getInput('zig-version')
+  const availableVersions = Object.keys(zigDistros)
+  if (!availableVersions.includes(zigVersion)) {
+    throw new Error(`Unsupported version: ${zigVersion}`)
+  }
+  const zigVersionedDistro = (zigDistros as Record<string, any>)[zigVersion]
+  const targetPlatform: string = await resolveTargetPlatform()
+  const availablePlatform = Object.keys(zigVersionedDistro)
+  if (!availablePlatform.includes(targetPlatform)) {
+    throw new Error(`Unsupported platform: ${targetPlatform}`)
+  }
+  const zigDistro = (zigVersionedDistro as Record<string, DistroData>)[
+    targetPlatform
+  ]
 
-    const tarballLink = zigDistro.tarball
-    const tarballPath = await cache.downloadTool(tarballLink)
+  const tarballLink = zigDistro.tarball
+  const tarballPath = await cache.downloadTool(tarballLink)
 
-    let zigPath
-    if (tarballLink.endsWith('tar.xz')) {
-        zigPath = await cache.extractTar(tarballPath, undefined, 'x')
-    } else if (tarballLink.endsWith('zip')) {
-        zigPath = await cache.extractZip(tarballPath)
-    } else {
-        throw new Error(`Unsupported compression: ${tarballLink}`)
-    }
-    const toolPath = await cache.cacheDir(zigPath, 'zig', zigVersion, targetPlatform)
-    core.addPath(toolPath)
+  let zigPath
+  if (tarballLink.endsWith('tar.xz')) {
+    zigPath = await cache.extractTar(tarballPath, undefined, 'x')
+  } else if (tarballLink.endsWith('zip')) {
+    zigPath = await cache.extractZip(tarballPath)
+  } else {
+    throw new Error(`Unsupported compression: ${tarballLink}`)
+  }
+  const toolPath = await cache.cacheDir(
+    zigPath,
+    'zig',
+    zigVersion,
+    targetPlatform
+  )
+  core.addPath(toolPath)
 }
 
 try {
-    await main()
+  await main()
 } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+  if (error instanceof Error) core.setFailed(error.message)
 }
