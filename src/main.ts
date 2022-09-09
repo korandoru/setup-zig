@@ -24,7 +24,7 @@ async function main(): Promise<void> {
   core.debug(new Date().toTimeString())
   core.debug(new Date().toTimeString())
 
-  core.info("zigDistros:")
+  core.info('zigDistros:')
   core.info(JSON.stringify(zigDistros))
 }
 
