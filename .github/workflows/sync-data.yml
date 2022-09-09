@@ -12,47 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Check dist
+name: Sync Zig Distribution Data
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**.md'
   pull_request:
-    paths-ignore:
-      - '**.md'
-  workflow_dispatch:
+  schedule:
+    - cron: '42 1 * * *'
 
 jobs:
-  check-dist:
+  sync-data:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn dlx ci
-
-      - name: Rebuild the dist/ directory
-        run: |
-          yarn run build
-          yarn run package
-
+      - name: Download Zig Distribution Data
+        run: curl -O https://ziglang.org/download/index.json
       - name: Compare the expected and actual dist/ directories
         id: diff
         run: |
-          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
-            echo "Detected uncommitted changes after build.  See status below:"
-            git diff
+          if [ "$(git diff --no-index data/index.json index.json | wc -l)" -gt "0" ]; then
+            echo "Detected differences in Zig distribution table.  See status below:"
+            git --no-pager diff --no-index data/index.json index.json
             exit 1
           fi
