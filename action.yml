@@ -19,6 +19,10 @@ inputs:
   zig-version:
     required: true
     description: 'Exact version of Zig to use.'
+  target-platform:
+    required: false
+    description: 'Platform and arch of Zig to use.'
+
 runs:
   using: 'node16'
   main: 'dist/index.js'

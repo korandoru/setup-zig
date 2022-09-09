@@ -15,7 +15,18 @@
  */
 
 import {expect, test} from '@jest/globals'
+import zigDistros from '../src/zigDistros.json'
 
 test('it works', async () => {
   await expect(1000 - 7).toEqual(993)
+})
+
+test('main', async () => {
+  const zigVersion: string = '0.9.1'
+  for (let zigDistrosKey in zigDistros) {
+    const zigDistro = (zigDistros as Record<string, any>)[zigDistrosKey]
+    Object.keys(zigDistro).forEach((k, n, ns) => {
+
+    })
+  }
 })
