@@ -32,7 +32,7 @@ async function main() {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(`Waiting ${ms} milliseconds ...`); // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(new Date().toTimeString());
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.debug(new Date().toTimeString());
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("zigDistros:");
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info('zigDistros:');
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(JSON.stringify(_zigDistros_json__WEBPACK_IMPORTED_MODULE_1__));
 }
 try {
