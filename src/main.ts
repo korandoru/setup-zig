@@ -16,7 +16,7 @@
 
 import * as core from '@actions/core'
 
-async function run(): Promise<void> {
+async function main(): Promise<void> {
   const ms: string = core.getInput('milliseconds')
   core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
 
@@ -26,8 +26,8 @@ async function run(): Promise<void> {
   core.setOutput('time', new Date().toTimeString())
 }
 
-run().then(() => {
-  process.exit()
-}).catch(error => {
-  core.setFailed(error.message)
-})
+try {
+  await main()
+} catch (error) {
+  if (error instanceof Error) core.setFailed(error.message)
+}
