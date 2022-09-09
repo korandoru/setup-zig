@@ -53,7 +53,6 @@ typings/
 # Optional yarn cache directory
 .yarn
 
-
 # Optional eslint cache
 .eslintcache
 
