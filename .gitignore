@@ -50,8 +50,9 @@ typings/
 # TypeScript cache
 *.tsbuildinfo
 
-# Optional npm cache directory
-.npm
+# Optional yarn cache directory
+.yarn
+
 
 # Optional eslint cache
 .eslintcache
