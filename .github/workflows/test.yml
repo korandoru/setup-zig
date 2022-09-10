@@ -44,11 +44,13 @@ jobs:
       - run: yarn run all
 
   test:
-    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         zig: [ 0.9.1, 0.8.1, master ]
-    name: Zig ${{ matrix.zig }} sample
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    name: Zig ${{ matrix.zig }} on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup Zig
