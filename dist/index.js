@@ -99,41 +99,33 @@ async function main() {
         throw new Error(`Unsupported platform: ${targetPlatform}`);
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Targeting to platform ${targetPlatform}...`);
-    let toolPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('zig', zigVersion, targetPlatform);
-    if (!toolPath) {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache miss. Downloading...`);
-        const zigDistro = zigVersionedDistro[targetPlatform];
-        const tarballLink = zigDistro.tarball;
-        const tarballPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(tarballLink);
-        let extractedPath;
-        if (tarballLink.endsWith('tar.xz')) {
-            extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(tarballPath, undefined, ['x', '--strip', '1']);
+    const toolPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('zig', zigVersion, targetPlatform);
+    if (toolPath) {
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache hit ${toolPath}`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(toolPath);
+        return;
+    }
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache miss. Downloading...`);
+    const zigDistro = zigVersionedDistro[targetPlatform];
+    const tarballLink = zigDistro.tarball;
+    const tarballPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(tarballLink);
+    let extractedPath;
+    if (tarballLink.endsWith('tar.xz')) {
+        extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractTar(tarballPath, undefined, ['x', '--strip', '1']);
+    }
+    else if (tarballLink.endsWith('zip')) {
+        extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(tarballPath);
+        const nestedPath = path__WEBPACK_IMPORTED_MODULE_3__.join(extractedPath, path__WEBPACK_IMPORTED_MODULE_3__.basename(tarballLink, '.zip'));
+        if (fs__WEBPACK_IMPORTED_MODULE_4__.existsSync(nestedPath)) {
+            extractedPath = nestedPath;
         }
-        else if (tarballLink.endsWith('zip')) {
-            extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(tarballPath);
-            for (const file of fs__WEBPACK_IMPORTED_MODULE_4__.readdirSync(extractedPath)) {
-                _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`original extractedPath file: ${file}`);
-            }
-            const nestedPath = path__WEBPACK_IMPORTED_MODULE_3__.join(extractedPath, path__WEBPACK_IMPORTED_MODULE_3__.basename(tarballPath, '.zip'));
-            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`nestedPath: ${nestedPath}`);
-            if (fs__WEBPACK_IMPORTED_MODULE_4__.existsSync(nestedPath)) {
-                extractedPath = nestedPath;
-                _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`change extractedPath: ${extractedPath}`);
-            }
-        }
-        else {
-            throw new Error(`Unsupported compression: ${tarballLink}`);
-        }
-        toolPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(extractedPath, 'zig', zigVersion, targetPlatform);
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache new ${toolPath}`);
     }
     else {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache hit ${toolPath}`);
+        throw new Error(`Unsupported compression: ${tarballLink}`);
     }
-    for (const file of fs__WEBPACK_IMPORTED_MODULE_4__.readdirSync(toolPath)) {
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`file: ${file}`);
-    }
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(toolPath);
+    const cachedToolPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(extractedPath, 'zig', zigVersion, targetPlatform);
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache new ${cachedToolPath}`);
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(cachedToolPath);
 }
 try {
     await main();
