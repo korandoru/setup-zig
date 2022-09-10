@@ -107,16 +107,22 @@ async function main(): Promise<void> {
     } else if (tarballLink.endsWith('zip')) {
       extractedPath = await cache.extractZip(tarballPath)
       const nestedPath = path.join(extractedPath, path.basename(tarballPath, '.zip'))
+      core.info(`nestedPath: ${nestedPath}`)
       if (fs.existsSync(nestedPath)) {
         extractedPath = nestedPath
+        core.info(`extractedPath: ${extractedPath}`)
       }
     } else {
       throw new Error(`Unsupported compression: ${tarballLink}`)
     }
     toolPath = await cache.cacheDir(extractedPath, 'zig', zigVersion, targetPlatform)
+
     core.info(`Cache new ${toolPath}`)
   } else {
     core.info(`Cache hit ${toolPath}`)
+  }
+  for (const file of fs.readdirSync(toolPath)) {
+    core.info(`file: ${file}`)
   }
   core.addPath(toolPath)
 }
