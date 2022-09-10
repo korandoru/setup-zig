@@ -106,11 +106,14 @@ async function main(): Promise<void> {
       extractedPath = await cache.extractTar(tarballPath, undefined, ['x', '--strip', '1'])
     } else if (tarballLink.endsWith('zip')) {
       extractedPath = await cache.extractZip(tarballPath)
+      for (const file of fs.readdirSync(extractedPath)) {
+        core.info(`original extractedPath file: ${file}`)
+      }
       const nestedPath = path.join(extractedPath, path.basename(tarballPath, '.zip'))
       core.info(`nestedPath: ${nestedPath}`)
       if (fs.existsSync(nestedPath)) {
         extractedPath = nestedPath
-        core.info(`extractedPath: ${extractedPath}`)
+        core.info(`change extractedPath: ${extractedPath}`)
       }
     } else {
       throw new Error(`Unsupported compression: ${tarballLink}`)
