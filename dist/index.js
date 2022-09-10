@@ -112,8 +112,10 @@ async function main() {
         else if (tarballLink.endsWith('zip')) {
             extractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.extractZip(tarballPath);
             const nestedPath = path__WEBPACK_IMPORTED_MODULE_3__.join(extractedPath, path__WEBPACK_IMPORTED_MODULE_3__.basename(tarballPath, '.zip'));
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`nestedPath: ${nestedPath}`);
             if (fs__WEBPACK_IMPORTED_MODULE_4__.existsSync(nestedPath)) {
                 extractedPath = nestedPath;
+                _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`extractedPath: ${extractedPath}`);
             }
         }
         else {
@@ -124,6 +126,9 @@ async function main() {
     }
     else {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache hit ${toolPath}`);
+    }
+    for (const file of fs__WEBPACK_IMPORTED_MODULE_4__.readdirSync(toolPath)) {
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`file: ${file}`);
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(toolPath);
 }
