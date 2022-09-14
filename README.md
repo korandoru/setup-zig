@@ -20,8 +20,7 @@ steps:
   - uses: korandoru/setup-zig@v1
     with:
       zig-version: 0.9.1 # released versions or master
-  - run: zig build
-  - run: zig test /path/to/test.zig
+  - run: zig build test
 ```
 
 The `zig-version` input is required. Options include [all released versions](https://ziglang.org/download/) or "master".
@@ -46,8 +45,7 @@ jobs:
         uses: korandoru/setup-zig@v1
         with:
           zig-version: ${{ matrix.zig }}
-      - run: zig build
-      - run: zig test /path/to/test.zig
+      - run: zig build test
 ```
 
 ## License
