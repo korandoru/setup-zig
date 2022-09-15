@@ -16,7 +16,6 @@
 
 import * as core from '@actions/core'
 import * as cache from '@actions/tool-cache'
-import zigDistros from './zigDistros.json'
 import * as path from 'path'
 import * as fs from 'fs'
 
@@ -79,8 +78,14 @@ async function resolveTargetPlatform(): Promise<string> {
   return `${resolvedArch}-${resolvedPlatform}`
 }
 
+async function downloadZigDistrosMetadata(): Promise<any> {
+  const metadataFile = await cache.downloadTool('https://ziglang.org/download/index.json')
+  return await import(metadataFile)
+}
+
 async function main(): Promise<void> {
   const zigVersion: string = core.getInput('zig-version')
+  const zigDistros = downloadZigDistrosMetadata()
   const availableVersions = Object.keys(zigDistros)
   if (!availableVersions.includes(zigVersion)) {
     throw new Error(`Unsupported version: ${zigVersion}`)
