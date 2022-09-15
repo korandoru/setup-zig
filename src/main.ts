@@ -80,7 +80,7 @@ async function resolveTargetPlatform(): Promise<string> {
 
 async function downloadZigDistrosMetadata(): Promise<any> {
   const metadataFile = await cache.downloadTool('https://ziglang.org/download/index.json')
-  return await import(metadataFile)
+  return await import(metadataFile, {assert: {type: 'json'}})
 }
 
 async function main(): Promise<void> {
