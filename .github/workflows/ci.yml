@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: 'build-test'
+name: CI
 on:
   pull_request:
   push:
@@ -21,16 +21,17 @@ on:
       - 'releases/*'
 
 jobs:
-  check:
+  check-license:
+    name: Check license headers
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
       - uses: apache/skywalking-eyes/header@main
         with:
           config: tools/ci/licenserc.yml
 
-  build:
+  check-dist:
+    name: Check dist
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -38,8 +39,32 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-      - name: Enable Corepack
-        run: corepack enable
+      - run: corepack enable
+      - name: Install dependencies
+        run: yarn dlx ci
+      - name: Rebuild dist
+        run: |
+          yarn run build
+          yarn run package
+      - name: Compare the expected and actual dist/ directories
+        id: diff
+        run: |
+          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build.  See status below:"
+            git diff
+            exit 1
+          fi
+
+  build:
+    name: Build actions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - run: corepack enable
       - run: yarn install
       - run: yarn run all
 
