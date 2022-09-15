@@ -1,25 +1,6 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 7773:
-/***/ ((module) => {
-
-function webpackEmptyAsyncContext(req) {
-	// Here Promise.resolve().then() is used instead of new Promise() to prevent
-	// uncaught exception popping up in devtools
-	return Promise.resolve().then(() => {
-		var e = new Error("Cannot find module '" + req + "'");
-		e.code = 'MODULE_NOT_FOUND';
-		throw e;
-	});
-}
-webpackEmptyAsyncContext.keys = () => ([]);
-webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 7773;
-module.exports = webpackEmptyAsyncContext;
-
-/***/ }),
-
 /***/ 3109:
 /***/ ((module, __webpack_exports__, __nccwpck_require__) => {
 
@@ -34,6 +15,8 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(path__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(7147);
 /* harmony import */ var fs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__nccwpck_require__.n(fs__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var fs_promises__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(3292);
+/* harmony import */ var fs_promises__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__nccwpck_require__.n(fs_promises__WEBPACK_IMPORTED_MODULE_4__);
 /*
  * Copyright 2022 Korandoru Contributors
  *
@@ -49,6 +32,7 @@ __nccwpck_require__.r(__webpack_exports__);
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 
 
 
@@ -103,8 +87,9 @@ async function resolveTargetPlatform() {
     return `${resolvedArch}-${resolvedPlatform}`;
 }
 async function downloadZigDistrosMetadata() {
-    const metadataFile = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool('https://ziglang.org/download/index.json');
-    return await __nccwpck_require__(7773)(metadataFile);
+    const metadataPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool('https://ziglang.org/download/index.json');
+    const metadata = await (0,fs_promises__WEBPACK_IMPORTED_MODULE_4__.readFile)(metadataPath, 'utf-8');
+    return JSON.parse(metadata);
 }
 async function main() {
     const zigVersion = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('zig-version');
@@ -6722,6 +6707,14 @@ module.exports = require("events");
 
 "use strict";
 module.exports = require("fs");
+
+/***/ }),
+
+/***/ 3292:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs/promises");
 
 /***/ }),
 

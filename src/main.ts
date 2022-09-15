@@ -18,6 +18,7 @@ import * as core from '@actions/core'
 import * as cache from '@actions/tool-cache'
 import * as path from 'path'
 import * as fs from 'fs'
+import {readFile} from 'fs/promises'
 
 interface DistroData {
   tarball: string
@@ -79,8 +80,9 @@ async function resolveTargetPlatform(): Promise<string> {
 }
 
 async function downloadZigDistrosMetadata(): Promise<any> {
-  const metadataFile = await cache.downloadTool('https://ziglang.org/download/index.json')
-  return await import(metadataFile, {assert: {type: 'json'}})
+  const metadataPath = await cache.downloadTool('https://ziglang.org/download/index.json')
+  const metadata = await readFile(metadataPath, 'utf-8')
+  return JSON.parse(metadata)
 }
 
 async function main(): Promise<void> {
