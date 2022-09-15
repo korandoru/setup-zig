@@ -82,14 +82,12 @@ async function resolveTargetPlatform(): Promise<string> {
 async function downloadZigDistrosMetadata(): Promise<any> {
   const metadataPath = await cache.downloadTool('https://ziglang.org/download/index.json')
   const metadata = await readFile(metadataPath, 'utf-8')
-  core.info(`metadata: ${metadata}`)
   return JSON.parse(metadata)
 }
 
 async function main(): Promise<void> {
   const zigVersion: string = core.getInput('zig-version')
-  const zigDistros = downloadZigDistrosMetadata()
-  core.info(`zigDistros: ${zigDistros}`)
+  const zigDistros = await downloadZigDistrosMetadata()
   const availableVersions = Object.keys(zigDistros)
   if (!availableVersions.includes(zigVersion)) {
     throw new Error(`Unsupported version: ${zigVersion}`)
