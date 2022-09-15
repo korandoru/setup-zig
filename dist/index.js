@@ -89,11 +89,13 @@ async function resolveTargetPlatform() {
 async function downloadZigDistrosMetadata() {
     const metadataPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool('https://ziglang.org/download/index.json');
     const metadata = await (0,fs_promises__WEBPACK_IMPORTED_MODULE_4__.readFile)(metadataPath, 'utf-8');
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`metadata: ${metadata}`);
     return JSON.parse(metadata);
 }
 async function main() {
     const zigVersion = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('zig-version');
     const zigDistros = downloadZigDistrosMetadata();
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`zigDistros: ${zigDistros}`);
     const availableVersions = Object.keys(zigDistros);
     if (!availableVersions.includes(zigVersion)) {
         throw new Error(`Unsupported version: ${zigVersion}`);
