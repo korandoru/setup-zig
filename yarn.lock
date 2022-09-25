@@ -4926,6 +4926,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"setup-zig@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "setup-zig@workspace:."
+  dependencies:
+    "@actions/core": ^1.6.0
+    "@actions/tool-cache": ^2.0.1
+    "@types/node": ^18.7.16
+    "@typescript-eslint/parser": ^5.8.1
+    "@vercel/ncc": ^0.34.0
+    eslint: ^8.23.0
+    eslint-plugin-github: ^4.3.2
+    eslint-plugin-jest: ^27.0.2
+    eslint-plugin-prettier: latest
+    jest: ^27.2.5
+    js-yaml: ^4.1.0
+    prettier: 2.7.1
+    ts-jest: ^27.1.2
+    typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
 "shebang-command@npm:^2.0.0":
   version: 2.0.0
   resolution: "shebang-command@npm:2.0.0"
@@ -5408,27 +5429,6 @@ __metadata:
   checksum: 99c11aaa8f45189fcfba6b8a4825fd684a321caa9bd7a76a27cf0c7732c174d198b99f449c52c3818107430b5f41c0ccbbfb75cb2ee3ca4a9451710986d61a60
   languageName: node
   linkType: hard
-
-"typescript-action@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "typescript-action@workspace:."
-  dependencies:
-    "@actions/core": ^1.6.0
-    "@actions/tool-cache": ^2.0.1
-    "@types/node": ^18.7.16
-    "@typescript-eslint/parser": ^5.8.1
-    "@vercel/ncc": ^0.34.0
-    eslint: ^8.23.0
-    eslint-plugin-github: ^4.3.2
-    eslint-plugin-jest: ^27.0.2
-    eslint-plugin-prettier: latest
-    jest: ^27.2.5
-    js-yaml: ^4.1.0
-    prettier: 2.7.1
-    ts-jest: ^27.1.2
-    typescript: ^4.4.4
-  languageName: unknown
-  linkType: soft
 
 "typescript@npm:^4.4.4":
   version: 4.8.3
