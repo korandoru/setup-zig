@@ -15,6 +15,10 @@
 name: 'Setup Zig environment'
 description: 'Set up a specific version of Zig and add the command-line tools to the PATH.'
 author: 'Korandoru Contributors'
+branding:
+  icon: 'code'
+  color: 'blue'
+
 inputs:
   zig-version:
     required: true
