@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-export default {
+// eslint-disable-next-line import/no-commonjs
+module.exports = {
   preset: 'conventionalcommits',
   branches: ['main'],
   plugins: [
