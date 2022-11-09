@@ -15,10 +15,7 @@
 name: CI
 on:
   pull_request:
-  push:
-    branches:
-      - 'main'
-      - 'releases/*'
+    branches: [ main ]
 
 jobs:
   check-license:
