@@ -36,6 +36,7 @@
     "@types/node": "^18.7.16",
     "@typescript-eslint/parser": "^5.8.1",
     "@vercel/ncc": "^0.34.0",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
     "eslint": "^8.23.0",
     "eslint-plugin-github": "^4.3.2",
     "eslint-plugin-jest": "^27.0.2",
