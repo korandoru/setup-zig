@@ -18,7 +18,7 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var fs_promises__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(3292);
 /* harmony import */ var fs_promises__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__nccwpck_require__.n(fs_promises__WEBPACK_IMPORTED_MODULE_4__);
 /*
- * Copyright 2022 Korandoru Contributors
+ * Copyright 2023 Korandoru Contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
