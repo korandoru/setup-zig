@@ -33,17 +33,12 @@ includes = [
     '**/*.ts',
     '**/*.yml',
     '**/*.zig',
-    '**/.github',
-    '**/.github/**',
 ]
 
 excludes = [
     'dist/**',
     'lib/**',
 ]
-
-[mapping]
-ts = 'SLASHSTAR_STYLE'
 
 [properties]
 inceptionYear = 2023
