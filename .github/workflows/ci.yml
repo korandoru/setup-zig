@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: korandoru/hawkeye@v1
+      - uses: korandoru/hawkeye@v2
 
   check-dist:
     name: Check dist
