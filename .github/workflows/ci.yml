@@ -78,3 +78,25 @@ jobs:
         with:
           zig-version: ${{ matrix.zig }}
       - run: zig run tests/simple.zig
+
+  required:
+    name: Required
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs:
+      - check-license
+      - check-dist
+      - build
+      - test
+    steps:
+      - name: Guardian
+        run: |
+          if [[ ! ( \
+                 "${{ needs.check-license.result }}" == "success" \
+              && "${{ needs.check-dist.result }}" == "success" \
+              && "${{ needs.build.result }}" == "success" \
+              && "${{ needs.test.result }}" == "success" \
+              ) ]]; then
+            echo "Required jobs haven't been completed successfully."
+            exit -1
+          fi
