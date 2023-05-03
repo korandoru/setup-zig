@@ -92,9 +92,11 @@ async function main(): Promise<void> {
   if (!availableVersions.includes(zigVersion)) {
     throw new Error(`Unsupported version: ${zigVersion}`)
   }
-  core.info(`Using version ${zigVersion}...`)
 
   const zigVersionedDistro = (zigDistros as Record<string, any>)[zigVersion]
+  const versionSpec = zigVersion !== 'master' ? zigVersion : zigVersionedDistro['version']
+  core.info(`Using version ${versionSpec}...`)
+
   const targetPlatform: string = await resolveTargetPlatform()
   const availablePlatform = Object.keys(zigVersionedDistro)
   if (!availablePlatform.includes(targetPlatform)) {
@@ -102,7 +104,7 @@ async function main(): Promise<void> {
   }
   core.info(`Targeting to platform ${targetPlatform}...`)
 
-  const toolPath = cache.find('zig', zigVersion, targetPlatform)
+  const toolPath = cache.find('zig', versionSpec, targetPlatform)
   if (toolPath) {
     core.info(`Cache hit ${toolPath}`)
     core.addPath(toolPath)
@@ -125,7 +127,7 @@ async function main(): Promise<void> {
   } else {
     throw new Error(`Unsupported compression: ${tarballLink}`)
   }
-  const cachedToolPath = await cache.cacheDir(extractedPath, 'zig', zigVersion, targetPlatform)
+  const cachedToolPath = await cache.cacheDir(extractedPath, 'zig', versionSpec, targetPlatform)
   core.info(`Cache new ${cachedToolPath}`)
   core.addPath(cachedToolPath)
 }
