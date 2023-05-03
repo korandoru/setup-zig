@@ -98,15 +98,16 @@ async function main() {
     if (!availableVersions.includes(zigVersion)) {
         throw new Error(`Unsupported version: ${zigVersion}`);
     }
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Using version ${zigVersion}...`);
     const zigVersionedDistro = zigDistros[zigVersion];
+    const versionSpec = zigVersion !== 'master' ? zigVersion : zigVersionedDistro['version'];
+    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Using version ${versionSpec}...`);
     const targetPlatform = await resolveTargetPlatform();
     const availablePlatform = Object.keys(zigVersionedDistro);
     if (!availablePlatform.includes(targetPlatform)) {
         throw new Error(`Unsupported platform: ${targetPlatform}`);
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Targeting to platform ${targetPlatform}...`);
-    const toolPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('zig', zigVersion, targetPlatform);
+    const toolPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('zig', versionSpec, targetPlatform);
     if (toolPath) {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache hit ${toolPath}`);
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(toolPath);
@@ -130,7 +131,7 @@ async function main() {
     else {
         throw new Error(`Unsupported compression: ${tarballLink}`);
     }
-    const cachedToolPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(extractedPath, 'zig', zigVersion, targetPlatform);
+    const cachedToolPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.cacheDir(extractedPath, 'zig', versionSpec, targetPlatform);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache new ${cachedToolPath}`);
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.addPath(cachedToolPath);
 }
