@@ -4264,9 +4264,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-github@npm:^4.9.2":
-  version: 4.9.2
-  resolution: "eslint-plugin-github@npm:4.9.2"
+"eslint-plugin-github@npm:^4.10.0":
+  version: 4.10.0
+  resolution: "eslint-plugin-github@npm:4.10.0"
   dependencies:
     "@github/browserslist-config": ^1.0.0
     "@typescript-eslint/eslint-plugin": ^6.0.0
@@ -4289,7 +4289,7 @@ __metadata:
     eslint: ^8.0.1
   bin:
     eslint-ignore-errors: bin/eslint-ignore-errors.js
-  checksum: 32d1bb452004fb8910d534d3b6dda5f754804946b756098ea7bc10a8f2932eca1e83fc3190be6b067b4ad8964b4a78b814ec15fc789444d048695caa9304b0e4
+  checksum: a96fe9ca11a166b550eb6e25ad601f268c2293f84ea0f16fb2427dfc22be6f57696841e4e1d34e1cfb9298e0f5dd6e3194578864b37bc32704129eed89714a16
   languageName: node
   linkType: hard
 
@@ -9182,7 +9182,7 @@ __metadata:
     "@vercel/ncc": ^0.36.1
     conventional-changelog-conventionalcommits: ^7.0.1
     eslint: ^8.46.0
-    eslint-plugin-github: ^4.9.2
+    eslint-plugin-github: ^4.10.0
     eslint-plugin-import: ^2.28.0
     eslint-plugin-jest: ^27.2.3
     eslint-plugin-prettier: ^5.0.0
