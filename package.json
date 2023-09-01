@@ -28,7 +28,7 @@
     "@actions/tool-cache": "^2.0.1"
   },
   "devDependencies": {
-    "@semantic-release/commit-analyzer": "^10.0.1",
+    "@semantic-release/commit-analyzer": "^10.0.4",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^9.0.4",
     "@semantic-release/release-notes-generator": "^11.0.7",
