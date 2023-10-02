@@ -19,7 +19,16 @@ module.exports = {
   preset: 'conventionalcommits',
   branches: ['main'],
   plugins: [
-    '@semantic-release/commit-analyzer',
+    [
+      '@semantic-release/commit-analyzer',
+      {
+        "preset": "angular",
+        "releaseRules": [
+          { scope: "perf", release: "patch" },
+          { scope: "deps", release: "patch" },
+        ]
+      }
+    ],
     '@semantic-release/release-notes-generator',
     [
       '@semantic-release/github',
