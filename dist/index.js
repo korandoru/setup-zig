@@ -45,7 +45,7 @@ async function resolveArchPlatform() {
         if (matches && matches.groups) {
             return {
                 arch: matches.groups.arch,
-                platform: matches.groups.os,
+                platform: matches.groups.os
             };
         }
         else {
@@ -96,7 +96,7 @@ async function resolveArchPlatform() {
     }
     return {
         arch: resolvedArch,
-        platform: resolvedPlatform,
+        platform: resolvedPlatform
     };
 }
 async function downloadZigDistrosMetadata() {
@@ -113,7 +113,7 @@ async function main() {
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Targeting to platform ${targetPlatform}...`);
     let versionSpec;
     let tarballLink;
-    if (!availableVersions.includes(zigVersion)) {
+    if (!availableVersions.includes(zigVersion) && zigVersion !== 'master') {
         versionSpec = zigVersion;
         tarballLink = `https://ziglang.org/builds/zig-${platform}-${arch}-${versionSpec}.tar.xz`;
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Using version ${versionSpec} with link ${tarballLink}`);
