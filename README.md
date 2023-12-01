@@ -36,9 +36,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        zig: [ 0.9.1, 0.8.1, master ]
-    name: Zig ${{ matrix.zig }} sample
+        zig: [ 0.12.0-dev.1710+2bffd8101, 0.11.0, 0.10.0, master ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    name: Zig ${{ matrix.zig }} on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - name: Setup Zig
