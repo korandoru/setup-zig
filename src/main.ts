@@ -113,7 +113,7 @@ async function main(): Promise<void> {
   let versionSpec: string
   let tarballLink: string
 
-  if (!availableVersions.includes(zigVersion)) {
+  if (!availableVersions.includes(zigVersion) && zigVersion !== 'master') {
     versionSpec = zigVersion
     tarballLink = `https://ziglang.org/builds/zig-${platform}-${arch}-${versionSpec}.tar.xz`
     core.info(`Using version ${versionSpec} with link ${tarballLink}`)
