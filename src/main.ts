@@ -26,11 +26,11 @@ interface DistroData {
   size: string
 }
 
-const platformPattern = /(?<arch>\w+)-(?<os>\w+)/;
+const platformPattern = /(?<arch>\w+)-(?<os>\w+)/
 
 async function resolveArchPlatform(): Promise<{
-  arch: string,
-  platform: string,
+  arch: string
+  platform: string
 }> {
   const targetPlatform: string = core.getInput('target-platform')
   if (targetPlatform && targetPlatform.length > 0) {
@@ -38,7 +38,7 @@ async function resolveArchPlatform(): Promise<{
     if (matches && matches.groups) {
       return {
         arch: matches.groups.arch,
-        platform: matches.groups.os,
+        platform: matches.groups.os
       }
     } else {
       throw new Error(`Unparsed target-platform: ${targetPlatform}`)
@@ -91,7 +91,7 @@ async function resolveArchPlatform(): Promise<{
 
   return {
     arch: resolvedArch,
-    platform: resolvedPlatform,
+    platform: resolvedPlatform
   }
 }
 
@@ -105,16 +105,16 @@ async function main(): Promise<void> {
   const zigVersion: string = core.getInput('zig-version')
   const zigDistros = await downloadZigDistrosMetadata()
   const availableVersions = Object.keys(zigDistros)
-  
-  const { arch, platform } = await resolveArchPlatform()
+
+  const {arch, platform} = await resolveArchPlatform()
   const targetPlatform = `${arch}-${platform}`
   core.info(`Targeting to platform ${targetPlatform}...`)
-  
+
   let versionSpec: string
   let tarballLink: string
 
   if (!availableVersions.includes(zigVersion)) {
-    versionSpec = zigVersion;
+    versionSpec = zigVersion
     tarballLink = `https://ziglang.org/builds/zig-${platform}-${arch}-${versionSpec}.tar.xz`
     core.info(`Using version ${versionSpec} with link ${tarballLink}`)
   } else {
@@ -137,7 +137,7 @@ async function main(): Promise<void> {
     return
   }
   core.info(`Cache miss. Downloading...`)
-  
+
   const tarballPath = await cache.downloadTool(tarballLink)
   let extractedPath: string
   if (tarballLink.endsWith('tar.xz')) {
