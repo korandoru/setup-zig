@@ -115,7 +115,13 @@ async function main(): Promise<void> {
 
   if (!availableVersions.includes(zigVersion) && zigVersion !== 'master') {
     versionSpec = zigVersion
-    tarballLink = `https://ziglang.org/builds/zig-${platform}-${arch}-${versionSpec}.tar.xz`
+    let extension: string
+    if (platform === 'windows') {
+      extension = 'zip'
+    } else {
+      extension = 'tar.xz'
+    }
+    tarballLink = `https://ziglang.org/builds/zig-${platform}-${arch}-${versionSpec}.${extension}`
     core.info(`Using version ${versionSpec} with link ${tarballLink}`)
   } else {
     const zigVersionedDistro = (zigDistros as Record<string, any>)[zigVersion]

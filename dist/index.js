@@ -115,7 +115,14 @@ async function main() {
     let tarballLink;
     if (!availableVersions.includes(zigVersion) && zigVersion !== 'master') {
         versionSpec = zigVersion;
-        tarballLink = `https://ziglang.org/builds/zig-${platform}-${arch}-${versionSpec}.tar.xz`;
+        let extension;
+        if (platform === 'windows') {
+            extension = 'zip';
+        }
+        else {
+            extension = 'tar.xz';
+        }
+        tarballLink = `https://ziglang.org/builds/zig-${platform}-${arch}-${versionSpec}.${extension}`;
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Using version ${versionSpec} with link ${tarballLink}`);
     }
     else {
