@@ -37,10 +37,20 @@ __nccwpck_require__.r(__webpack_exports__);
 
 
 
-async function resolveTargetPlatform() {
+const platformPattern = /(?<arch>\w+)-(?<os>\w+)/;
+async function resolveArchPlatform() {
     const targetPlatform = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('target-platform');
     if (targetPlatform && targetPlatform.length > 0) {
-        return targetPlatform;
+        const matches = platformPattern.exec(targetPlatform);
+        if (matches && matches.groups) {
+            return {
+                arch: matches.groups.arch,
+                platform: matches.groups.os,
+            };
+        }
+        else {
+            throw new Error(`Unparsed target-platform: ${targetPlatform}`);
+        }
     }
     const platform = process.platform;
     let resolvedPlatform;
@@ -84,7 +94,10 @@ async function resolveTargetPlatform() {
         default:
             throw new Error(`Unsupported arch: ${arch}`);
     }
-    return `${resolvedArch}-${resolvedPlatform}`;
+    return {
+        arch: resolvedArch,
+        platform: resolvedPlatform,
+    };
 }
 async function downloadZigDistrosMetadata() {
     const metadataPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool('https://ziglang.org/download/index.json');
@@ -95,18 +108,28 @@ async function main() {
     const zigVersion = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('zig-version');
     const zigDistros = await downloadZigDistrosMetadata();
     const availableVersions = Object.keys(zigDistros);
-    if (!availableVersions.includes(zigVersion)) {
-        throw new Error(`Unsupported version: ${zigVersion}`);
-    }
-    const zigVersionedDistro = zigDistros[zigVersion];
-    const versionSpec = zigVersion !== 'master' ? zigVersion : zigVersionedDistro['version'];
-    _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Using version ${versionSpec}...`);
-    const targetPlatform = await resolveTargetPlatform();
-    const availablePlatform = Object.keys(zigVersionedDistro);
-    if (!availablePlatform.includes(targetPlatform)) {
-        throw new Error(`Unsupported platform: ${targetPlatform}`);
-    }
+    const { arch, platform } = await resolveArchPlatform();
+    const targetPlatform = `${arch}-${platform}`;
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Targeting to platform ${targetPlatform}...`);
+    let versionSpec;
+    let tarballLink;
+    if (!availableVersions.includes(zigVersion)) {
+        versionSpec = zigVersion;
+        tarballLink = `https://ziglang.org/builds/zig-${platform}-${arch}-${versionSpec}.tar.xz`;
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Using version ${versionSpec} with link ${tarballLink}`);
+    }
+    else {
+        const zigVersionedDistro = zigDistros[zigVersion];
+        versionSpec = zigVersion !== 'master' ? zigVersion : zigVersionedDistro['version'];
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Using version ${versionSpec}...`);
+        const availablePlatform = Object.keys(zigVersionedDistro);
+        if (!availablePlatform.includes(targetPlatform)) {
+            throw new Error(`Unsupported platform: ${targetPlatform}`);
+        }
+        const zigDistro = zigVersionedDistro[targetPlatform];
+        tarballLink = zigDistro.tarball;
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Using link ${tarballLink}`);
+    }
     const toolPath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.find('zig', versionSpec, targetPlatform);
     if (toolPath) {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache hit ${toolPath}`);
@@ -114,8 +137,6 @@ async function main() {
         return;
     }
     _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Cache miss. Downloading...`);
-    const zigDistro = zigVersionedDistro[targetPlatform];
-    const tarballLink = zigDistro.tarball;
     const tarballPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_1__.downloadTool(tarballLink);
     let extractedPath;
     if (tarballLink.endsWith('tar.xz')) {
