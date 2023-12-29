@@ -34,7 +34,6 @@ For information regarding locally cached versions of Zig on GitHub-hosted runner
 ```yml
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
