@@ -28,5 +28,5 @@ inputs:
     description: 'Platform and arch of Zig to use.'
 
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
