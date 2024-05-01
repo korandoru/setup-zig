@@ -2101,12 +2101,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.12.2":
-  version: 20.12.2
-  resolution: "@types/node@npm:20.12.2"
+"@types/node@npm:^20.12.7":
+  version: 20.12.7
+  resolution: "@types/node@npm:20.12.7"
   dependencies:
     undici-types: ~5.26.4
-  checksum: 3242ab04fe69ae32a2da29a7a2fce41fccb370bc1189de43d2dfbb491bd3253d3ee2070cbb5613061148e4862fdaa9cf62722c43128ce5c7d33fe83750956613
+  checksum: 7cc979f7e2ca9a339ec71318c3901b9978555257929ef3666987f3e447123bc6dc92afcc89f6347e09e07d602fde7d51bcddea626c23aa2bb74aeaacfd1e1686
   languageName: node
   linkType: hard
 
@@ -9251,7 +9251,7 @@ __metadata:
     "@semantic-release/git": ^10.0.1
     "@semantic-release/github": ^10.0.3
     "@semantic-release/release-notes-generator": ^13.0.0
-    "@types/node": ^20.12.2
+    "@types/node": ^20.12.7
     "@typescript-eslint/eslint-plugin": ^7.4.0
     "@typescript-eslint/parser": ^7.4.0
     "@vercel/ncc": ^0.38.1
