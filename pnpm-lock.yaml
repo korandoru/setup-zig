@@ -32,10 +32,10 @@ devDependencies:
     specifier: ^20.13.0
     version: 20.13.0
   '@typescript-eslint/eslint-plugin':
-    specifier: ^7.8.0
+    specifier: ^7.11.0
     version: 7.11.0(@typescript-eslint/parser@7.11.0)(eslint@8.57.0)(typescript@5.4.5)
   '@typescript-eslint/parser':
-    specifier: ^7.8.0
+    specifier: ^7.11.0
     version: 7.11.0(eslint@8.57.0)(typescript@5.4.5)
   '@vercel/ncc':
     specifier: ^0.38.1
@@ -68,7 +68,7 @@ devDependencies:
     specifier: ^3.2.5
     version: 3.2.5
   semantic-release:
-    specifier: ^23.0.8
+    specifier: ^23.1.1
     version: 23.1.1(typescript@5.4.5)
   ts-jest:
     specifier: ^29.1.4
