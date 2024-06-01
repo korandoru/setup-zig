@@ -1,4 +1,4 @@
-# Copyright 2023 Korandoru Contributors
+# Copyright 2023 tison <wander4096@gmail.com>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,8 +27,8 @@ jobs:
         with:
           node-version: 20.x
       - run: corepack enable
-      - run: yarn install
-      - run: yarn run all
-      - run: yarn semantic-release
+      - run: pnpm install
+      - run: pnpm run all
+      - run: pnpm semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
