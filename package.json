@@ -48,7 +48,7 @@
     "prettier": "^3.3.3",
     "semantic-release": "^24.0.0",
     "ts-jest": "^29.2.3",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.4"
   },
   "packageManager": "pnpm@8.15.5"
 }
