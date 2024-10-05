@@ -1,5 +1,11 @@
 # Setup Zig
 
+## Archived
+
+Use [mlugg/setup-zig](https://github.com/marketplace/actions/setup-zig-compiler) instead.
+
+## Original
+
 [![CI](https://github.com/korandoru/setup-zig/actions/workflows/ci.yml/badge.svg)](https://github.com/korandoru/setup-zig/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/korandoru/setup-zig)](https://github.com/korandoru/setup-zig/releases)
 [![release date](https://img.shields.io/github/release-date/korandoru/setup-zig)](https://github.com/korandoru/setup-zig/releases)
